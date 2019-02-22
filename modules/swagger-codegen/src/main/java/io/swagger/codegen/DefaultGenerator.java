@@ -554,6 +554,30 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
 
     }
 
+    protected void generateContentFiles(List<File> files, Map<String, Object> bundle) {
+        for (ContentFile contentFile : config.contentFiles()) {
+            try {
+                String outputFolder = config.outputFolder();
+                if (StringUtils.isNotEmpty(contentFile.folder)) {
+                    outputFolder += File.separator + contentFile.folder;
+                }
+                File of = new File(outputFolder);
+                if (!of.isDirectory()) {
+                    of.mkdirs();
+                }
+                String outputFilename = outputFolder + File.separator + contentFile.destinationFilename.replace('/', File.separatorChar);
+                if (!config.shouldOverwrite(outputFilename)) {
+                    LOGGER.info("Skipped overwriting " + outputFilename);
+                    continue;
+                }
+                writeToFile(outputFilename, contentFile.content);
+                files.add(new File(outputFilename));
+            } catch (Exception e) {
+                throw new RuntimeException("Could not generate content file '" + contentFile.destinationFilename + "'", e);
+            }
+        }
+    }
+
     protected void generateSupportingFiles(List<File> files, Map<String, Object> bundle) {
         if (!isGenerateSupportingFiles) {
             return;
@@ -757,6 +781,7 @@ public class DefaultGenerator extends AbstractGenerator implements Generator {
         Map<String, Object> bundle = buildSupportFileBundle(allOperations, allModels);
         generateSupportingFiles(files, bundle);
         config.processSwagger(swagger);
+        generateContentFiles(files, bundle);
         return files;
     }
 

@@ -4,14 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 
-import io.swagger.codegen.CliOption;
-import io.swagger.codegen.CodegenConfig;
-import io.swagger.codegen.CodegenConstants;
-import io.swagger.codegen.CodegenModel;
-import io.swagger.codegen.CodegenProperty;
-import io.swagger.codegen.CodegenType;
-import io.swagger.codegen.DefaultCodegen;
-import io.swagger.codegen.SupportingFile;
+import io.swagger.codegen.*;
 
 import io.swagger.models.Model;
 import io.swagger.models.ModelImpl;
@@ -103,7 +96,7 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
         modelTemplateFiles.put("model.mustache", ".swift");
         apiTemplateFiles.put("api.mustache", ".swift");
         embeddedTemplateDir = templateDir = "swift4";
-        apiPackage = File.separator + "APIs";
+        apiPackage = File.separator + "Services";
         modelPackage = File.separator + "Models";
 
         languageSpecificPrimitives = new HashSet<>(
@@ -304,46 +297,45 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
 
         setLenientTypeCast(convertPropertyToBooleanAndWriteBack(LENIENT_TYPE_CAST));
 
-        supportingFiles.add(new SupportingFile("Podspec.mustache",
-                                               "",
-                                               projectName + ".podspec"));
-        supportingFiles.add(new SupportingFile("Cartfile.mustache",
-                                               "",
-                                               "Cartfile"));
-        supportingFiles.add(new SupportingFile("APIHelper.mustache",
-                                               sourceFolder,
-                                               "APIHelper.swift"));
-        supportingFiles.add(new SupportingFile("AlamofireImplementations.mustache",
-                                               sourceFolder,
-                                               "AlamofireImplementations.swift"));
-        supportingFiles.add(new SupportingFile("Configuration.mustache",
-                                               sourceFolder,
-                                               "Configuration.swift"));
-        supportingFiles.add(new SupportingFile("Extensions.mustache",
-                                               sourceFolder,
-                                               "Extensions.swift"));
-        supportingFiles.add(new SupportingFile("Models.mustache",
-                                               sourceFolder,
-                                               "Models.swift"));
-        supportingFiles.add(new SupportingFile("APIs.mustache",
-                                               sourceFolder,
-                                               "APIs.swift"));
-        supportingFiles.add(new SupportingFile("CodableHelper.mustache",
-                                               sourceFolder,
-                                               "CodableHelper.swift"));
-        supportingFiles.add(new SupportingFile("JSONEncodableEncoding.mustache",
-                                               sourceFolder,
-                                               "JSONEncodableEncoding.swift"));
-        supportingFiles.add(new SupportingFile("JSONEncodingHelper.mustache",
-                                               sourceFolder,
-                                               "JSONEncodingHelper.swift"));
-        supportingFiles.add(new SupportingFile("git_push.sh.mustache",
-                                               "",
-                                               "git_push.sh"));
-        supportingFiles.add(new SupportingFile("gitignore.mustache",
-                                               "",
-                                               ".gitignore"));
-
+        // supportingFiles.add(new SupportingFile("Podspec.mustache",
+        //                                        "",
+        //                                        projectName + ".podspec"));
+        // supportingFiles.add(new SupportingFile("Cartfile.mustache",
+        //                                        "",
+        //                                        "Cartfile"));
+        // supportingFiles.add(new SupportingFile("APIHelper.mustache",
+        //                                        sourceFolder,
+        //                                        "APIHelper.swift"));
+        // supportingFiles.add(new SupportingFile("AlamofireImplementations.mustache",
+        //                                        sourceFolder,
+        //                                        "AlamofireImplementations.swift"));
+        // supportingFiles.add(new SupportingFile("Configuration.mustache",
+        //                                        sourceFolder,
+        //                                        "Configuration.swift"));
+        // supportingFiles.add(new SupportingFile("Extensions.mustache",
+        //                                        sourceFolder,
+        //                                        "Extensions.swift"));
+        // supportingFiles.add(new SupportingFile("Models.mustache",
+        //                                        sourceFolder,
+        //                                        "Models.swift"));
+        // supportingFiles.add(new SupportingFile("APIs.mustache",
+        //                                        sourceFolder,
+        //                                        "APIs.swift"));
+        // supportingFiles.add(new SupportingFile("CodableHelper.mustache",
+        //                                        sourceFolder,
+        //                                        "CodableHelper.swift"));
+        // supportingFiles.add(new SupportingFile("JSONEncodableEncoding.mustache",
+        //                                        sourceFolder,
+        //                                        "JSONEncodableEncoding.swift"));
+        // supportingFiles.add(new SupportingFile("JSONEncodingHelper.mustache",
+        //                                        sourceFolder,
+        //                                        "JSONEncodingHelper.swift"));
+        // supportingFiles.add(new SupportingFile("git_push.sh.mustache",
+        //                                        "",
+        //                                        "git_push.sh"));
+        // supportingFiles.add(new SupportingFile("gitignore.mustache",
+        //                                        "",
+        //                                        ".gitignore"));
     }
 
     @Override
@@ -489,9 +481,9 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
     @Override
     public String toApiName(String name) {
         if (name.length() == 0) {
-            return "DefaultAPI";
+            return "DefaultServices";
         }
-        return initialCaps(name) + "API";
+        return initialCaps(name) + "Services";
     }
 
     @Override
@@ -731,6 +723,23 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
         }
 
         return postProcessedModelsEnum;
+    }
+
+    @Override
+    public Map<String, Object> postProcessAllModels(Map<String, Object> objs) {
+        String extensionFilename = "ResponseExtensions.swift";
+        StringBuilder extensionContents = new StringBuilder();
+        extensionContents.append("//\n// " + extensionFilename + "\n//\n// Generated by swagger-codegen\n// https://github.com/swagger-api/swagger-codegen\n//\n\n");
+        extensionContents.append("import Foundation\n");
+        extensionContents.append("import NetworkLayer\n\n");
+        for (String name: objs.keySet()) {
+            if (name.endsWith("Response")) {
+                extensionContents.append(String.format("extension %s: ResponseType {}\n", name));
+            }
+        }
+        System.out.println(extensionContents);
+        contentFiles.add(new ContentFile(extensionContents.toString(), sourceFolder + modelPackage, extensionFilename));
+        return super.postProcessAllModels(objs);
     }
 
     @Override

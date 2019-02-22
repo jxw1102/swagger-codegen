@@ -1,0 +1,674 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "v1",
+    "title": "dod"
+  },
+  "host": "mobilefirst.englishtown.com",
+  "basePath": "/services/api/dod",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/Classroom/Status": {
+      "get": {
+        "tags": [
+          "Classroom"
+        ],
+        "operationId": "Classroom_Status",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ClassStatusResultResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Classroom/ClassComplete": {
+      "post": {
+        "tags": [
+          "Classroom"
+        ],
+        "operationId": "Classroom_ClassComplete",
+        "consumes": [],
+        "produces": [],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
+    "/Game/Init": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_Init",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GameResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Game/Submit": {
+      "post": {
+        "tags": [
+          "Game"
+        ],
+        "operationId": "Game_Submit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "result",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/GameSubmitParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/GameResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Lead/Status": {
+      "get": {
+        "tags": [
+          "Lead"
+        ],
+        "operationId": "Lead_Status",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LeadStatusResultResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Lead/Verify": {
+      "post": {
+        "tags": [
+          "Lead"
+        ],
+        "operationId": "Lead_Verify",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "paramses",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/LeadVerifyParams"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/LeadVerifyResultResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Quiz/Init": {
+      "post": {
+        "tags": [
+          "Quiz"
+        ],
+        "operationId": "Quiz_Init",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/QuizResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Quiz/Submit": {
+      "post": {
+        "tags": [
+          "Quiz"
+        ],
+        "operationId": "Quiz_Submit",
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml",
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "parameters": [
+          {
+            "name": "result",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/QuizSubmitParam"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/QuizResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Quiz/Load": {
+      "get": {
+        "tags": [
+          "Quiz"
+        ],
+        "operationId": "Quiz_Load",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/QuizListResponse"
+            }
+          }
+        }
+      }
+    },
+    "/Session/Init": {
+      "post": {
+        "tags": [
+          "Session"
+        ],
+        "operationId": "Session_Init",
+        "consumes": [],
+        "produces": [
+          "application/json",
+          "text/json",
+          "application/xml",
+          "text/xml"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SessionResultResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "ClassStatusResultResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/ClassStatusResult"
+        },
+        "errors": {
+          "$ref": "#/definitions/ResponseError"
+        }
+      }
+    },
+    "ClassStatusResult": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "NotReady",
+            "Ready",
+            "Complete"
+          ],
+          "type": "string"
+        },
+        "classUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "ResponseError": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "detail": {
+          "type": "string"
+        }
+      }
+    },
+    "GameResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Game"
+        },
+        "errors": {
+          "$ref": "#/definitions/ResponseError"
+        }
+      }
+    },
+    "Game": {
+      "type": "object",
+      "properties": {
+        "gameId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "isLast": {
+          "type": "boolean"
+        },
+        "gameQuestions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GameQuestion"
+          }
+        },
+        "gameOptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GameOption"
+          }
+        },
+        "countDown": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "gameType": {
+          "enum": [
+            "Select",
+            "MultiSelect"
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "GameQuestion": {
+      "type": "object",
+      "properties": {
+        "questionType": {
+          "enum": [
+            "Text",
+            "TextAndIcon",
+            "Audio"
+          ],
+          "type": "string"
+        },
+        "displayText": {
+          "type": "string"
+        },
+        "media": {
+          "type": "string"
+        },
+        "displayOrder": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "GameOption": {
+      "type": "object",
+      "properties": {
+        "optionId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "displayText": {
+          "type": "string"
+        },
+        "optionType": {
+          "enum": [
+            "Text",
+            "Icon",
+            "Input"
+          ],
+          "type": "string"
+        },
+        "displayOrder": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "GameSubmitParam": {
+      "type": "object",
+      "properties": {
+        "gameId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "gameOptionIds": {
+          "type": "array",
+          "items": {
+            "format": "int32",
+            "type": "integer"
+          }
+        },
+        "countDown": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "duration": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "tryTimes": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "LeadStatusResultResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/LeadStatusResult"
+        },
+        "errors": {
+          "$ref": "#/definitions/ResponseError"
+        }
+      }
+    },
+    "LeadStatusResult": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "NotReady",
+            "Ready"
+          ],
+          "type": "string"
+        },
+        "userName": {
+          "type": "string"
+        }
+      }
+    },
+    "LeadVerifyParams": {
+      "type": "object",
+      "properties": {
+        "phoneNumber": {
+          "type": "string"
+        },
+        "hasAttendedDod": {
+          "type": "boolean"
+        },
+        "leadType": {
+          "type": "string"
+        },
+        "userProfile": {
+          "type": "string"
+        },
+        "sesseionId": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "LeadVerifyResult": {
+      "type": "object",
+      "properties": {
+        "isSuccess": {
+          "type": "boolean"
+        },
+        "failedSessionIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "errorCode": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "QuizResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/Quiz"
+        },
+        "errors": {
+          "$ref": "#/definitions/ResponseError"
+        }
+      }
+    },
+    "Quiz": {
+      "type": "object",
+      "properties": {
+        "quizId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "isLast": {
+          "type": "boolean"
+        },
+        "countDown": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "quizQuestions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QuizQuestion"
+          }
+        },
+        "quizOptions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/QuizOption"
+          }
+        },
+        "quizType": {
+          "enum": [
+            "Chat",
+            "InputName"
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "QuizQuestion": {
+      "type": "object",
+      "properties": {
+        "questionType": {
+          "enum": [
+            "Text",
+            "TextAndIcon",
+            "Audio"
+          ],
+          "type": "string"
+        },
+        "displayText": {
+          "type": "string"
+        },
+        "media": {
+          "type": "string"
+        },
+        "displayOrder": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "QuizOption": {
+      "type": "object",
+      "properties": {
+        "optionId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "displayText": {
+          "type": "string"
+        },
+        "optionType": {
+          "enum": [
+            "Text",
+            "Icon",
+            "Input"
+          ],
+          "type": "string"
+        },
+        "displayOrder": {
+          "format": "int32",
+          "type": "integer"
+        }
+      }
+    },
+    "QuizSubmitParam": {
+      "type": "object",
+      "properties": {
+        "quizId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "quizOptionId": {
+          "format": "int32",
+          "type": "integer"
+        },
+        "inputText": {
+          "type": "string"
+        }
+      }
+    },
+    "SessionResultResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/SessionResult"
+        },
+        "errors": {
+          "$ref": "#/definitions/ResponseError"
+        }
+      }
+    },
+    "SessionResult": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        },
+        "qrCodeUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "QuizListResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Quiz"
+          }
+        },
+        "errors": {
+          "$ref": "#/definitions/ResponseError"
+        }
+      }
+    },
+    "LeadVerifyResultResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/LeadVerifyResult"
+        },
+        "errors": {
+          "$ref": "#/definitions/ResponseError"
+        }
+      }
+    }
+  }
+}

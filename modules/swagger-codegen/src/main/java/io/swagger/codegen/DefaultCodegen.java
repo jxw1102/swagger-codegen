@@ -89,6 +89,7 @@ public class DefaultCodegen {
     protected Map<String, Object> additionalProperties = new HashMap<String, Object>();
     protected Map<String, Object> vendorExtensions = new HashMap<String, Object>();
     protected List<SupportingFile> supportingFiles = new ArrayList<SupportingFile>();
+    protected List<ContentFile> contentFiles = new ArrayList<ContentFile>();
     protected List<CliOption> cliOptions = new ArrayList<CliOption>();
     protected boolean skipOverwrite;
     protected boolean removeOperationIdPrefix;
@@ -551,6 +552,10 @@ public class DefaultCodegen {
 
     public List<SupportingFile> supportingFiles() {
         return supportingFiles;
+    }
+
+    public List<ContentFile> contentFiles() {
+        return contentFiles;
     }
 
     public String outputFolder() {
