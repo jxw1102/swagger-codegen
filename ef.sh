@@ -1,5 +1,8 @@
 #!/bin/sh
 
+rm -rf result
+curl http://mobilefirst.englishtown.com/services/api/dod/swagger/docs/v1 > swagger.json
+
 SCRIPT="$0"
 
 while [ -h "$SCRIPT" ] ; do

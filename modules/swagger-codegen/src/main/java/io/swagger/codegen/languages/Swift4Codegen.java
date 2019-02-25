@@ -21,13 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
@@ -297,45 +291,12 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
 
         setLenientTypeCast(convertPropertyToBooleanAndWriteBack(LENIENT_TYPE_CAST));
 
-        // supportingFiles.add(new SupportingFile("Podspec.mustache",
-        //                                        "",
-        //                                        projectName + ".podspec"));
         // supportingFiles.add(new SupportingFile("Cartfile.mustache",
         //                                        "",
         //                                        "Cartfile"));
         // supportingFiles.add(new SupportingFile("APIHelper.mustache",
         //                                        sourceFolder,
         //                                        "APIHelper.swift"));
-        // supportingFiles.add(new SupportingFile("AlamofireImplementations.mustache",
-        //                                        sourceFolder,
-        //                                        "AlamofireImplementations.swift"));
-        // supportingFiles.add(new SupportingFile("Configuration.mustache",
-        //                                        sourceFolder,
-        //                                        "Configuration.swift"));
-        // supportingFiles.add(new SupportingFile("Extensions.mustache",
-        //                                        sourceFolder,
-        //                                        "Extensions.swift"));
-        // supportingFiles.add(new SupportingFile("Models.mustache",
-        //                                        sourceFolder,
-        //                                        "Models.swift"));
-        // supportingFiles.add(new SupportingFile("APIs.mustache",
-        //                                        sourceFolder,
-        //                                        "APIs.swift"));
-        // supportingFiles.add(new SupportingFile("CodableHelper.mustache",
-        //                                        sourceFolder,
-        //                                        "CodableHelper.swift"));
-        // supportingFiles.add(new SupportingFile("JSONEncodableEncoding.mustache",
-        //                                        sourceFolder,
-        //                                        "JSONEncodableEncoding.swift"));
-        // supportingFiles.add(new SupportingFile("JSONEncodingHelper.mustache",
-        //                                        sourceFolder,
-        //                                        "JSONEncodingHelper.swift"));
-        // supportingFiles.add(new SupportingFile("git_push.sh.mustache",
-        //                                        "",
-        //                                        "git_push.sh"));
-        // supportingFiles.add(new SupportingFile("gitignore.mustache",
-        //                                        "",
-        //                                        ".gitignore"));
     }
 
     @Override
@@ -690,6 +651,21 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
     }
 
     @Override
+    public Map<String, Object> postProcessOperations(Map<String, Object> objs) {
+        Map<String, Object> opsDict = (Map<String, Object>) objs.get("operations");
+        List<CodegenOperation> ops = (List<CodegenOperation>) opsDict.get("operation");
+        ListIterator<CodegenOperation> it = ops.listIterator();
+        while (it.hasNext()) {
+            CodegenOperation elem = it.next();
+            if (!"mobile".equals(elem.vendorExtensions.get("x-consumer"))) {
+                System.out.println("Skip " + elem.path);
+                it.remove();
+            }
+        }
+        return super.postProcessOperations(objs);
+    }
+
+    @Override
     public Map<String, Object> postProcessModels(Map<String, Object> objs) {
         Map<String, Object> postProcessedModelsEnum = postProcessModelsEnum(objs);
 
@@ -737,6 +713,7 @@ public class Swift4Codegen extends DefaultCodegen implements CodegenConfig {
                 extensionContents.append(String.format("extension %s: ResponseType {}\n", name));
             }
         }
+        System.out.println("ResponseExtensions.swift");
         System.out.println(extensionContents);
         contentFiles.add(new ContentFile(extensionContents.toString(), sourceFolder + modelPackage, extensionFilename));
         return super.postProcessAllModels(objs);
