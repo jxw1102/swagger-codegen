@@ -27,12 +27,11 @@ public class {{classname}} {
 
     public class {{operationIdCamelCase}}Endpoint: EndpointType {
         public let path: String
-        public let httpMethod: HttpMethod
+        public let httpMethod = HttpMethod.{{httpMethod.toLowerCase}}
         public let task: HttpTask<{{#bodyParam}}{{{dataType}}}{{/bodyParam}}{{^bodyParam}}EmptyParam{{/bodyParam}}>
-        public init(path: String, httpMethod: HttpMethod, task: HttpTask<{{#bodyParam}}{{{dataType}}}{{/bodyParam}}{{^bodyParam}}EmptyParam{{/bodyParam}}>) {
+        public init(path: String{{#bodyParam}}, body: {{{dataType}}}{{/bodyParam}}{{#hasQueryParams}}, queryParams: Parameters{{/hasQueryParams}}) {
             self.path = path
-            self.httpMethod = httpMethod
-            self.task = task
+            self.task = {{#bodyParam}}.requestWithParameters(bodyParameters: body, queryParameters: {{#hasQueryParams}}queryParams{{/hasQueryParams}}{{^hasQueryParams}}nil{{/hasQueryParams}}){{/bodyParam}}{{^bodyParam}}{{#hasQueryParams}}.requestWithParameters(bodyParameters: nil, queryParameters: queryParams){{/hasQueryParams}}{{^hasQueryParams}}.request{{/hasQueryParams}}{{/bodyParam}}
         }
     }
 
@@ -54,7 +53,7 @@ public class {{classname}} {
             params["{{baseName}}"] = {{paramName}}{{#isEnum}}{{^isContainer}}.rawValue{{/isContainer}}{{/isEnum}}
         }
         {{/required}}{{/queryParams}}{{/hasQueryParams}}
-        let endpoint = {{operationIdCamelCase}}Endpoint(path: path, httpMethod: .{{httpMethod.toLowerCase}}, task: {{#bodyParam}}.requestWithParameters(bodyParameters: {{#bodyParam}}{{paramName}}{{/bodyParam}}{{^bodyParam}}nil{{/bodyParam}}, queryParameters: {{#hasQueryParams}}params{{/hasQueryParams}}{{^hasQueryParams}}nil{{/hasQueryParams}}){{/bodyParam}}{{^bodyParam}}.request{{/bodyParam}})
+        let endpoint = {{operationIdCamelCase}}Endpoint(path: path{{#bodyParam}}, body: {{paramName}}{{/bodyParam}}{{#hasQueryParams}}, queryParams: params{{/hasQueryParams}})
         let router = Router<{{operationIdCamelCase}}Endpoint, {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}EmptyResponse{{/returnType}}>()
         router.request(with: endpoint, completion: completion)
     }
