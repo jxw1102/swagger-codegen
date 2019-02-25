@@ -32,3 +32,7 @@ export JAVA_OPTS="${JAVA_OPTS} -XX:MaxPermSize=256M -Xmx1024M -DloggerPath=conf/
 ags="$@ generate -t modules/swagger-codegen/src/main/resources/swift4 -i ./swagger.json -l swift4 -o ./result"
 
 java $JAVA_OPTS -jar $executable $ags
+
+if which swiftlint >/dev/null; then
+  swiftlint autocorrect trailing_whitespace vertical_whitespace
+fi
